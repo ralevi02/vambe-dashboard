@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useTheme } from "@/app/providers";
 import { parseCSVString } from "@/lib/csvParserClient";
 import { saveCustomCSV, loadCustomCSV, clearCustomCSV, clearClients } from "@/lib/clientsCache";
@@ -56,28 +56,24 @@ export default function SettingsClient() {
   const [csvStatus, setCsvStatus] = useState<{
     fileName: string;
     rowCount: number;
-  } | null>(null);
+  } | null>(() => {
+    if (typeof window === "undefined") return null;
+    const custom = loadCustomCSV();
+    return custom ? { fileName: "CSV personalizado", rowCount: custom.length } : null;
+  });
   const [csvError, setCsvError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   // Model selection state
-  const [selectedModel, setSelectedModel] = useState(GROQ_MODELS[0].value);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(LS_MODEL_KEY);
-    if (stored) setSelectedModel(stored);
-  }, []);
+  const [selectedModel, setSelectedModel] = useState(() => {
+    if (typeof window === "undefined") return GROQ_MODELS[0].value;
+    return localStorage.getItem(LS_MODEL_KEY) ?? GROQ_MODELS[0].value;
+  });
 
   function handleModelSelect(value: string) {
     setSelectedModel(value);
     localStorage.setItem(LS_MODEL_KEY, value);
   }
-
-  // Hydrate custom CSV info from localStorage on mount
-  useEffect(() => {
-    const custom = loadCustomCSV();
-    if (custom) setCsvStatus({ fileName: "CSV personalizado", rowCount: custom.length });
-  }, []);
 
   function handleFile(file: File) {
     setCsvError(null);

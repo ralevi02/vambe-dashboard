@@ -37,8 +37,8 @@ export default function ClientModal({ client, onClose }: Props) {
         <div className="flex items-start justify-between px-6 py-5 border-b border-line shrink-0">
           <div className="flex items-center gap-3">
             {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-[#00e676]/10 flex items-center justify-center shrink-0">
-              <span className="text-sm font-black text-[#00e676]">
+            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+              <span className="text-sm font-black text-accent">
                 {client.name.charAt(0).toUpperCase()}
               </span>
             </div>
@@ -83,8 +83,8 @@ export default function ClientModal({ client, onClose }: Props) {
           {cat ? (
             <>
               {/* Summary */}
-              <div className="p-4 bg-[#00e676]/5 border border-[#00e676]/15 rounded-xl">
-                <p className="text-xs font-bold text-[#00e676] mb-1.5">Resumen IA</p>
+              <div className="p-4 bg-accent/5 border border-accent/15 rounded-xl">
+                <p className="text-xs font-bold text-accent mb-1.5">Resumen IA</p>
                 <p className="text-sm text-ink-2 leading-relaxed">{cat.summary}</p>
               </div>
 
