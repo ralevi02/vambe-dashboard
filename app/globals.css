@@ -1,35 +1,58 @@
 @import "tailwindcss";
 
-:root {
-  --vambe-green: #00e676;
-}
-
-body {
-  background-color: #0a0a0a;
-  color: #f0f0f0;
-}
+/* ── Semantic color tokens ──────────────────────────────────────────────────── */
+/* Default = dark mode (current design). Light mode overrides via .light class */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --surface:      #0a0a0a;   /* page bg */
+  --card:         #111111;   /* card bg */
+  --hover:        #161616;   /* row/item hover */
+  --elevated:     #1a1a1a;   /* inputs, chips */
+  --line:         #222222;   /* borders */
+  --line-subtle:  #1a1a1a;   /* subtle dividers */
+
+  --ink:          #fafafa;   /* primary text */
+  --ink-2:        #aaaaaa;   /* secondary */
+  --ink-3:        #777777;   /* muted */
+  --ink-4:        #666666;   /* faint labels */
+  --ink-5:        #555555;   /* placeholder / disabled */
 }
 
+.light {
+  --surface:      #f4f4f5;
+  --card:         #ffffff;
+  --hover:        #f0f0f0;
+  --elevated:     #e8e8e8;
+  --line:         #e4e4e7;
+  --line-subtle:  #f0f0f4;
+
+  --ink:          #09090b;
+  --ink-2:        #3f3f46;
+  --ink-3:        #71717a;
+  --ink-4:        #a1a1aa;
+  --ink-5:        #d4d4d8;
+}
+
+/* ── Tailwind v4 token registration ────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-surface:     var(--surface);
+  --color-card:        var(--card);
+  --color-hover:       var(--hover);
+  --color-elevated:    var(--elevated);
+  --color-line:        var(--line);
+  --color-line-subtle: var(--line-subtle);
+
+  --color-ink:         var(--ink);
+  --color-ink-2:       var(--ink-2);
+  --color-ink-3:       var(--ink-3);
+  --color-ink-4:       var(--ink-4);
+  --color-ink-5:       var(--ink-5);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--surface);
+  color: var(--ink);
 }

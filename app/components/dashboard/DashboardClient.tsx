@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Client } from "@/lib/types";
 import { buildMetrics } from "@/lib/metrics";
+import { saveClients, loadClients, clearClients } from "@/lib/clientsCache";
+import { LS_MODEL_KEY, GROQ_MODELS } from "@/lib/config";
 import MetricsCards from "@/app/components/dashboard/MetricsCards";
 import ClientsTable from "@/app/components/dashboard/ClientsTable";
 import SellerStats from "@/app/components/dashboard/SellerStats";
@@ -15,8 +17,11 @@ interface DashboardClientProps {
 }
 
 export default function DashboardClient({ initialClients }: DashboardClientProps) {
-  const [clients, setClients] = useState<Client[]>(initialClients);
-  const [analysisState, setAnalysisState] = useState<AnalysisState>("idle");
+  // Lazy initializer: hydrates categories from localStorage on first render
+  const [clients, setClients] = useState<Client[]>(() => loadClients(initialClients));
+  const [analysisState, setAnalysisState] = useState<AnalysisState>(
+    () => (loadClients(initialClients).some((c) => c.category) ? "done" : "idle")
+  );
   const [errorMsg, setErrorMsg] = useState("");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
 
@@ -28,11 +33,12 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
     setAnalysisState("loading");
     setErrorMsg("");
     setProgress({ done: 0, total: 0 });
-    // Reset categories so we start fresh
+    clearClients();
     setClients(initialClients);
 
     try {
-      const res = await fetch("/api/analyze-all");
+      const model = localStorage.getItem(LS_MODEL_KEY) ?? GROQ_MODELS[0].value;
+      const res = await fetch(`/api/analyze-all?model=${encodeURIComponent(model)}`);
       if (!res.body) throw new Error("No stream");
 
       const reader = res.body.getReader();
@@ -58,6 +64,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
               prev.map((c) => (c.id === json.client.id ? json.client : c))
             );
           } else if (json.type === "done") {
+            saveClients(json.clients);
             setClients(json.clients);
             setAnalysisState("done");
           }
@@ -77,8 +84,8 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
       {/* Header row */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Dashboard</h1>
-          <p className="text-sm text-[#555] mt-1">
+          <h1 className="text-2xl font-black text-ink">Dashboard</h1>
+          <p className="text-sm text-ink-4 mt-1">
             Resumen del rendimiento de ventas y análisis de clientes
           </p>
         </div>
@@ -90,7 +97,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
             disabled={analysisState === "loading"}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all
               ${analysisState === "loading"
-                ? "bg-[#1a1a1a] text-[#555] cursor-not-allowed"
+                ? "bg-elevated text-ink-5 cursor-not-allowed"
                 : "bg-[#00e676] text-black hover:bg-[#00c864] active:scale-95"
               }`}
           >
@@ -116,11 +123,11 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
           {/* Progress bar */}
           {analysisState === "loading" && progress.total > 0 && (
             <div className="w-48">
-              <div className="flex justify-between text-xs text-[#555] mb-1">
+              <div className="flex justify-between text-xs text-ink-4 mb-1">
                 <span>Procesando clientes</span>
                 <span className="text-[#00e676]">{progress.done}/{progress.total}</span>
               </div>
-              <div className="h-1.5 bg-[#1f1f1f] rounded-full overflow-hidden">
+              <div className="h-1.5 bg-line rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#00e676] rounded-full transition-all duration-300"
                   style={{ width: `${progressPct}%` }}
@@ -143,7 +150,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
             </div>
           )}
           {analysisState === "idle" && (
-            <p className="text-xs text-[#444]">Extrae categorías con IA</p>
+            <p className="text-xs text-ink-4">Extrae categorías con IA</p>
           )}
         </div>
       </div>
@@ -161,7 +168,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
             distribution={metrics.sectorDistribution}
           />
         ) : (
-          <div className="bg-[#111111] rounded-xl border border-dashed border-[#2a2a2a] flex flex-col items-center justify-center p-10 text-center gap-3">
+          <div className="bg-card rounded-xl border border-dashed border-line flex flex-col items-center justify-center p-10 text-center gap-3">
             <div className="w-10 h-10 rounded-full bg-[#00e676]/10 flex items-center justify-center">
               <svg className="w-5 h-5 text-[#00e676]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -169,8 +176,8 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
               </svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-[#555]">Análisis LLM pendiente</p>
-              <p className="text-xs text-[#333] mt-1">
+              <p className="text-sm font-bold text-ink-5">Análisis LLM pendiente</p>
+              <p className="text-xs text-ink-5/60 mt-1">
                 Presiona &ldquo;Analizar con IA&rdquo; para ver distribución por sector
               </p>
             </div>

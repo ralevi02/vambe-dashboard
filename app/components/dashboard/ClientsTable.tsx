@@ -6,6 +6,8 @@ import Card from "@/app/components/ui/Card";
 import Badge from "@/app/components/ui/Badge";
 import SearchBar from "@/app/components/ui/SearchBar";
 import FilterSelect from "@/app/components/ui/FilterSelect";
+import ClientModal from "@/app/components/client/ClientModal";
+
 
 interface ClientsTableProps {
   clients: Client[];
@@ -15,6 +17,7 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
   const [search, setSearch] = useState("");
   const [sellerFilter, setSellerFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
   const sellers = Array.from(new Set(clients.map((c) => c.seller))).sort();
 
@@ -62,12 +65,12 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left">
           <thead>
-            <tr className="border-b border-[#1f1f1f]">
+            <tr className="border-b border-line-subtle">
               {["Cliente", "Vendedor", "Fecha", "Sector", "Estado"].map(
                 (col) => (
                   <th
                     key={col}
-                    className="pb-3 pr-4 text-xs font-bold text-[#555] uppercase tracking-widest"
+                    className="pb-3 pr-4 text-xs font-bold text-ink-4 uppercase tracking-widest"
                   >
                     {col}
                   </th>
@@ -78,7 +81,7 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={5} className="py-8 text-center text-[#555]">
+                <td colSpan={5} className="py-8 text-center text-ink-4">
                   Sin resultados
                 </td>
               </tr>
@@ -86,14 +89,18 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
               filtered.map((client) => (
                 <tr
                   key={client.id}
-                  className="border-b border-[#1a1a1a] hover:bg-[#161616] transition-colors"
+                  onClick={() => setSelectedClient(client)}
+                  className="border-b border-line-subtle hover:bg-hover cursor-pointer transition-colors group"
+
                 >
                   <td className="py-3 pr-4">
-                    <p className="font-semibold text-white">{client.name}</p>
-                    <p className="text-xs text-[#555]">{client.email}</p>
+                      <p className="font-semibold text-ink group-hover:text-[#00e676] transition-colors">
+                        {client.name}
+                      </p>
+                    <p className="text-xs text-ink-5">{client.email}</p>
                   </td>
-                  <td className="py-3 pr-4 text-[#888]">{client.seller}</td>
-                  <td className="py-3 pr-4 text-[#555]">
+                  <td className="py-3 pr-4 text-ink-2">{client.seller}</td>
+                  <td className="py-3 pr-4 text-ink-3">
                     {new Date(client.meetingDate).toLocaleDateString("es-CL")}
                   </td>
                   <td className="py-3 pr-4">
@@ -114,9 +121,16 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
           </tbody>
         </table>
       </div>
-      <p className="mt-3 text-xs text-[#444] text-right">
+      <p className="mt-3 text-xs text-ink-4 text-right">
         {filtered.length} de {clients.length} clientes
       </p>
+      {/* Client details modal */}
+      {selectedClient && (
+        <ClientModal
+          client={selectedClient}
+          onClose={() => setSelectedClient(null)}
+        />
+      )}
     </Card>
   );
 }

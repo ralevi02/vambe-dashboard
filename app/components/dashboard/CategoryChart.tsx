@@ -34,14 +34,14 @@ export default function CategoryChart({
           return (
             <div key={label}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm text-[#ccc] truncate max-w-[60%]">
+                <span className="text-sm text-ink-2 truncate max-w-[60%]">
                   {label}
                 </span>
-                <span className="text-xs text-[#555] ml-2">
+                <span className="text-sm text-ink-3 ml-2">
                   {count} · {pct}%
                 </span>
               </div>
-              <div className="h-1.5 rounded-full bg-[#1f1f1f] overflow-hidden">
+              <div className="h-2 rounded-full bg-line overflow-hidden">
                 <div
                   className={`h-full rounded-full ${COLORS[i % COLORS.length]} transition-all duration-500`}
                   style={{ width: `${pct}%` }}

@@ -12,14 +12,14 @@ interface StatCardProps {
   accent?: string;
 }
 
-function StatCard({ title, value, sub, accent = "text-white" }: StatCardProps) {
+function StatCard({ title, value, sub, accent = "text-ink" }: StatCardProps) {
   return (
     <Card className="flex flex-col gap-1">
-      <p className="text-xs font-bold text-[#555] uppercase tracking-widest">
+      <p className="text-xs font-bold text-ink-4 uppercase tracking-widest">
         {title}
       </p>
       <p className={`text-3xl font-black ${accent}`}>{value}</p>
-      {sub && <p className="text-xs text-[#444] mt-1">{sub}</p>}
+      {sub && <p className="text-sm text-ink-4 mt-1">{sub}</p>}
     </Card>
   );
 }
@@ -48,7 +48,6 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
         title="Top Vendedor"
         value={metrics.topSeller}
         sub="por cierres"
-        accent="text-white"
       />
     </div>
   );

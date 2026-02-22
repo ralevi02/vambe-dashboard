@@ -1,9 +1,10 @@
 import OpenAI from "openai";
 import { Client, ClientCategory } from "./types";
+import { GROQ_BASE_URL, GROQ_MODEL, AI_BATCH_SIZE } from "./config";
 
 const openai = new OpenAI({
-  baseURL: "https://models.inference.ai.azure.com",
-  apiKey: process.env.GITHUB_TOKEN ?? "",
+  baseURL: GROQ_BASE_URL,
+  apiKey: process.env.GROQ_API_KEY ?? "",
 });
 
 const SYSTEM_PROMPT = `Eres un analista de ventas experto.
@@ -18,7 +19,8 @@ function chunk<T>(arr: T[], size: number): T[][] {
 
 /** Send one batch of clients to the LLM and return id→category pairs */
 async function analyzeBatch(
-  batch: Client[]
+  batch: Client[],
+  model: string
 ): Promise<Array<{ id: string } & ClientCategory>> {
   const lines = batch
     .map((c, i) => `### Cliente ${i + 1} (id: ${c.id})\n${c.transcription.trim()}`)
@@ -47,7 +49,7 @@ Responde SOLO con el array JSON, sin ningún texto adicional.
 `;
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: model,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: userPrompt },
@@ -66,12 +68,13 @@ Responde SOLO con el array JSON, sin ningún texto adicional.
  */
 export async function analyzeAllTranscriptions(
   clients: Client[],
-  BATCH_SIZE = 10
+  BATCH_SIZE = AI_BATCH_SIZE,
+  model = GROQ_MODEL
 ): Promise<Map<string, ClientCategory>> {
   const batches = chunk(clients, BATCH_SIZE);
 
   // All batches run concurrently
-  const results = await Promise.all(batches.map((b) => analyzeBatch(b)));
+  const results = await Promise.all(batches.map((b) => analyzeBatch(b, model)));
 
   const map = new Map<string, ClientCategory>();
   for (const items of results) {
