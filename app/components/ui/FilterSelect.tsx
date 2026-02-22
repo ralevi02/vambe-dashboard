@@ -17,7 +17,7 @@ export default function FilterSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`text-sm border border-[#2a2a2a] rounded-lg px-3 py-2 bg-[#1a1a1a] text-[#f0f0f0] focus:outline-none focus:ring-1 focus:ring-[#00e676] transition ${className}`}
+      className={`text-sm border border-line rounded-lg px-3 py-2 bg-elevated text-ink focus:outline-none focus:ring-1 focus:ring-[#00e676] transition ${className}`}
     >
       <option value="">{placeholder}</option>
       {options.map((opt) => (

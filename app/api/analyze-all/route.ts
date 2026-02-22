@@ -1,13 +1,16 @@
 import { parseClientsCSV } from "@/lib/csvParser";
 import { analyzeAllTranscriptions } from "@/lib/aiModel";
 import { Client } from "@/lib/types";
+import { GROQ_MODEL } from "@/lib/config";
 
 // SSE helper
 function sseMsg(data: object) {
   return `data: ${JSON.stringify(data)}\n\n`;
 }
 
-export async function GET(): Promise<Response> {
+export async function GET(req: Request): Promise<Response> {
+  const { searchParams } = new URL(req.url);
+  const model = searchParams.get("model") ?? GROQ_MODEL;
   const clients = parseClientsCSV();
 
   const stream = new ReadableStream({
@@ -15,7 +18,7 @@ export async function GET(): Promise<Response> {
       const enc = new TextEncoder();
 
       // Single LLM call with all transcriptions at once
-      const categoryMap = await analyzeAllTranscriptions(clients);
+      const categoryMap = await analyzeAllTranscriptions(clients, undefined, model);
 
       const enriched: Client[] = clients.map((c) => ({
         ...c,

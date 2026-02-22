@@ -13,7 +13,7 @@ export default function SearchBar({
 }: SearchBarProps) {
   return (
     <div className={`relative ${className}`}>
-      <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-[#555]">
+      <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-ink-5">
         <svg
           className="w-4 h-4"
           fill="none"
@@ -33,7 +33,7 @@ export default function SearchBar({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-9 pr-4 py-2 text-sm border border-[#2a2a2a] rounded-lg bg-[#1a1a1a] text-[#f0f0f0] placeholder-[#555] focus:outline-none focus:ring-1 focus:ring-[#00e676] focus:border-[#00e676] transition"
+        className="w-full pl-9 pr-4 py-2 text-sm border border-line rounded-lg bg-elevated text-ink placeholder-ink-5 focus:outline-none focus:ring-1 focus:ring-[#00e676] focus:border-[#00e676] transition"
       />
     </div>
   );

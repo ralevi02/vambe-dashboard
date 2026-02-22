@@ -14,10 +14,10 @@ export default function SellerStats({ sellers }: SellerStatsProps) {
         {sellers.map((seller) => (
           <div key={seller.seller}>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-semibold text-white">
+              <span className="text-sm font-semibold text-ink">
                 {seller.seller}
               </span>
-              <div className="flex items-center gap-2 text-xs text-[#555]">
+              <div className="flex items-center gap-2 text-xs text-ink-3">
                 <span>
                   {seller.closed}/{seller.total}
                 </span>
@@ -27,7 +27,7 @@ export default function SellerStats({ sellers }: SellerStatsProps) {
               </div>
             </div>
             {/* Bar */}
-            <div className="h-1.5 rounded-full bg-[#1f1f1f] overflow-hidden">
+            <div className="h-2 rounded-full bg-line overflow-hidden">
               <div
                 className="h-full rounded-full bg-[#00e676] transition-all duration-500"
                 style={{ width: `${(seller.total / maxTotal) * 100}%` }}
