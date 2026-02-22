@@ -20,15 +20,13 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
-
-  // Hydrate from localStorage on mount
-  useEffect(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "dark";
     const stored = localStorage.getItem(LS_THEME_KEY) as Theme | null;
-    if (stored === "light" || stored === "dark") setTheme(stored);
-  }, []);
+    return stored === "light" || stored === "dark" ? stored : "dark";
+  });
 
-  // Apply class to <html> whenever theme changes
+  // Apply class to <html> and persist whenever theme changes
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove("dark", "light");

@@ -16,6 +16,8 @@
   --ink-3:        #777777;   /* muted */
   --ink-4:        #666666;   /* faint labels */
   --ink-5:        #555555;   /* placeholder / disabled */
+
+  --accent:       #00e676;   /* brand green */
 }
 
 .light {
@@ -31,6 +33,8 @@
   --ink-3:        #71717a;
   --ink-4:        #a1a1aa;
   --ink-5:        #d4d4d8;
+
+  --accent:       #00c853;   /* brand green (slightly darker for light bg) */
 }
 
 /* ── Tailwind v4 token registration ────────────────────────────────────────── */
