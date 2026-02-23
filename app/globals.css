@@ -60,3 +60,11 @@ body {
   background-color: var(--surface);
   color: var(--ink);
 }
+
+/* Logo inversion: logo has black lettering → invert to white in dark mode */
+:root .logo-theme-adapt {
+  filter: invert(1);
+}
+.light .logo-theme-adapt {
+  filter: none;
+}
