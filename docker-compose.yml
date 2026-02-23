@@ -1,0 +1,12 @@
+services:
+  vambe-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vambe-dashboard:latest
+    container_name: vambe-dashboard
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env          
+    restart: unless-stopped
