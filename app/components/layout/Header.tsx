@@ -19,9 +19,12 @@ export default function Header() {
           </svg>
         </button>
 
-        <span className="text-xl font-black text-ink tracking-tight">
-          vambe<span className="text-[#00e676]">.</span>
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/vambe-logo.png"
+          alt="Vambe"
+          className="logo-theme-adapt h-7 w-auto"
+        />
         <span className="text-ink-5 hidden sm:inline">/</span>
         <span className="text-sm text-ink-3 font-medium hidden sm:inline">
           Sales Dashboard

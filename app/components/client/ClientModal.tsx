@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { Client } from "@/lib/types";
+import Modal from "@/app/components/ui/Modal";
 import Badge from "@/app/components/ui/Badge";
 
 interface Props {
@@ -18,48 +18,14 @@ const volumeVariant = (v?: string) =>
 export default function ClientModal({ client, onClose }: Props) {
   const cat = client.category;
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [onClose]);
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
-      onClick={onClose}
+    <Modal
+      onClose={onClose}
+      title={client.name}
+      subtitle={client.email}
+      maxWidth="max-w-xl"
     >
-      <div
-        className="relative w-full max-w-xl max-h-[90vh] bg-card border border-line rounded-2xl flex flex-col overflow-hidden shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* ── Header ── */}
-        <div className="flex items-start justify-between px-6 py-5 border-b border-line shrink-0">
-          <div className="flex items-center gap-3">
-            {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-              <span className="text-sm font-black text-accent">
-                {client.name.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <div>
-              <h2 className="text-base font-black text-ink leading-tight">{client.name}</h2>
-              <p className="text-xs text-ink-5 mt-0.5">{client.email}</p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-lg text-ink-5 hover:text-ink hover:bg-elevated transition-colors ml-4 shrink-0"
-            aria-label="Cerrar"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* ── Scrollable body ── */}
-        <div className="overflow-y-auto p-6 space-y-5">
+      <div className="space-y-5">
 
           {/* Contact chips */}
           <div className="flex flex-wrap gap-2 text-xs">
@@ -131,8 +97,7 @@ export default function ClientModal({ client, onClose }: Props) {
               {client.transcription}
             </pre>
           </section>
-        </div>
       </div>
-    </div>
+    </Modal>
   );
 }

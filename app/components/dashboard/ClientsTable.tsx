@@ -94,7 +94,7 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
 
                 >
                   <td className="py-3 pr-4">
-                      <p className="font-semibold text-ink group-hover:text-[#00e676] transition-colors">
+                      <p className="font-semibold text-ink group-hover:text-accent transition-colors">
                         {client.name}
                       </p>
                     <p className="text-xs text-ink-5">{client.email}</p>
