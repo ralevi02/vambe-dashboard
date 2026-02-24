@@ -162,7 +162,7 @@ export default function ClientsPageClient({ initialClients }: Props) {
                     className="border-b border-line-subtle hover:bg-hover cursor-pointer transition-colors group"
                   >
                     <td className="px-4 py-3">
-                      <p className="font-semibold text-ink group-hover:text-[#00e676] transition-colors">
+                      <p className="font-semibold text-ink group-hover:text-accent transition-colors">
                         {client.name}
                       </p>
                       <p className="text-xs text-ink-5">{client.email}</p>
