@@ -1,7 +1,7 @@
 import { SellerDetail } from "@/lib/sellers";
 import { Client } from "@/lib/types";
 import SellerConversionBar from "./SellerConversionBar";
-import ClientRow from "@/app/components/ui/ClientRow";
+import ClientRow from "@/app/components/clients/ClientRow";
 
 interface Props {
   seller: SellerDetail;

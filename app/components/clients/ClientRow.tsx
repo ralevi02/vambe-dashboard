@@ -1,5 +1,5 @@
 import { Client } from "@/lib/types";
-import Badge from "./Badge";
+import Badge from "@/app/components/ui/Badge";
 
 interface Props {
   client: Client;

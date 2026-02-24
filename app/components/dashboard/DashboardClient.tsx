@@ -6,7 +6,7 @@ import { buildMetrics } from "@/lib/metrics";
 import { saveClients, loadClients, clearClients } from "@/lib/clientsCache";
 import { LS_MODEL_KEY, GROQ_MODELS } from "@/lib/config";
 import MetricsCards from "@/app/components/dashboard/MetricsCards";
-import ClientsTable from "@/app/components/dashboard/ClientsTable";
+import ClientsTable from "@/app/components/clients/ClientsTable";
 import SellerStats from "@/app/components/dashboard/SellerStats";
 import CategoryChart from "@/app/components/dashboard/CategoryChart";
 
@@ -194,7 +194,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
       )}
 
       {/* Clients table */}
-      <ClientsTable clients={clients} />
+      <ClientsTable clients={clients} compact />
     </div>
   );
 }
