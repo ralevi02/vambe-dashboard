@@ -74,3 +74,29 @@ export interface SellerPerformance {
   closed: number;
   conversionRate: number;
 }
+
+// ── Insights page data ────────────────────────────────────────────────────────
+export interface PainPointCount {
+  label: string;     // shortened for Y-axis display
+  fullLabel: string; // full text shown on hover
+  count: number;
+}
+
+export interface ChannelConversionStat {
+  channel: string;
+  total: number;
+  closed: number;
+  rate: number; // 0-100
+}
+
+export interface SentimentStat {
+  sentiment: string;
+  count: number;
+}
+
+export interface InsightsData {
+  painPoints: PainPointCount[];           // top N pain points by frequency
+  channelConversion: ChannelConversionStat[];
+  sentimentDistribution: SentimentStat[];
+  hasAiData: boolean;                     // false if no client has been analyzed yet
+}
