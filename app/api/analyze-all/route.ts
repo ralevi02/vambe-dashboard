@@ -16,40 +16,42 @@ export async function GET(req: Request): Promise<Response> {
   const stream = new ReadableStream({
     async start(controller) {
       const enc = new TextEncoder();
+      const send = (data: object) =>
+        controller.enqueue(enc.encode(sseMsg(data)));
 
-      // Single LLM call with all transcriptions at once
-      const categoryMap = await analyzeAllTranscriptions(clients, undefined, model);
+      try {
+        // Single LLM call with all transcriptions at once
+        const categoryMap = await analyzeAllTranscriptions(clients, undefined, model);
 
-      const enriched: Client[] = clients.map((c) => ({
-        ...c,
-        category: categoryMap.get(c.id),
-      }));
+        const enriched: Client[] = clients.map((c) => ({
+          ...c,
+          category: categoryMap.get(c.id),
+        }));
 
-      // Stream each client result so the UI progress bar still animates
-      for (let i = 0; i < enriched.length; i++) {
-        controller.enqueue(
-          enc.encode(
-            sseMsg({
-              type: "progress",
-              done: i + 1,
-              total: enriched.length,
-              client: enriched[i],
-            })
-          )
-        );
-      }
-
-      controller.enqueue(
-        enc.encode(
-          sseMsg({
-            type: "done",
-            clients: enriched,
+        // Stream each client result so the UI progress bar still animates
+        for (let i = 0; i < enriched.length; i++) {
+          send({
+            type: "progress",
+            done: i + 1,
             total: enriched.length,
-            analyzed: enriched.filter((c) => c.category).length,
-          })
-        )
-      );
-      controller.close();
+            client: enriched[i],
+          });
+        }
+
+        send({
+          type: "done",
+          clients: enriched,
+          total: enriched.length,
+          analyzed: enriched.filter((c) => c.category).length,
+        });
+      } catch (err) {
+        send({
+          type: "error",
+          message: err instanceof Error ? err.message : String(err),
+        });
+      } finally {
+        controller.close();
+      }
     },
   });
 

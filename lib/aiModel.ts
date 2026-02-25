@@ -74,6 +74,19 @@ Responde SOLO con el array JSON, sin ningún texto adicional.
       { role: "user", content: userPrompt },
     ],
     temperature: 0.2,
+  }).catch((err) => {
+    // Groq rate-limit / quota exhausted → surface a clear message
+    const msg: string = err?.message ?? String(err);
+    const status: number = err?.status ?? err?.response?.status ?? 0;
+    if (
+      status === 429 ||
+      /rate.limit|quota|token.*limit|limit.*token|capacity/i.test(msg)
+    ) {
+      throw new Error(
+        "Límite de tokens agotado para este modelo. Esperá unos minutos o cambia de modelo en Configuración."
+      );
+    }
+    throw err;
   });
 
   const text = response.choices[0]?.message?.content?.trim() ?? "";
