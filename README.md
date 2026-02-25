@@ -2,7 +2,6 @@
 Dashboard de reuniones de venta con análisis de leads potenciado por IA, construido con Next.js 15.
 
 **🔗 Live app:** [https://vambe-dashboard-ten.vercel.app](https://vambe-dashboard-ten.vercel.app)  
-**📦 Repositorio:** [https://github.com/ralevi02/vambe-dashboard](https://github.com/ralevi02/vambe-dashboard)
 
 ---
 
@@ -119,12 +118,12 @@ Con `Promise.all`, todos los batches se despachan simultáneamente al LLM:
 tiempo_total ≈ latencia_del_batch_más_lento
 ```
 
-Por ejemplo, con 50 clientes divididos en 5 batches de 10, el tiempo pasa de ~25 s (5 s por batch × 5 batches) a ~5–7 s (latencia del batch más lento). Se envian en batches y no todos separados para agotar los límites de la API de Groq.
+Por ejemplo, con 50 clientes divididos en 5 batches de 10, el tiempo pasa de ~25 s (5 s por batch × 5 batches) a ~5–7 s (latencia del batch más lento). Se envian en batches y no todos por separado para no agotar los límites de la API de Groq.
 
 
 ### LLM: Groq + llama-3.3-70b-versatile
 
-Se eligió Groq por su velocidad y tier gratuito generoso.
+Se eligió Groq por su velocidad y tier gratuito generoso. La version de modelo de LLama se puede cambiar desde la página de COnfiguración.
 
 ### Streaming con SSE en lugar de una sola respuesta
 
