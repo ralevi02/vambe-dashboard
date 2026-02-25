@@ -32,6 +32,9 @@ export interface ClientCategory {
   integrationNeeds: string; // Systems they want to integrate with
   urgencyLevel: "Baja" | "Media" | "Alta";
   summary: string;          // Short summary of the transcript
+  sentiment: "Positivo" | "Neutral" | "Negativo"; // Overall client attitude
+  triggerWords: string[];   // High-intent keywords detected (e.g. "presupuesto", "urgente")
+  nextSteps: string;        // Concrete commitments extracted (e.g. "Enviar demo el lunes")
 }
 
 // Shape returned by the /api/clients endpoint

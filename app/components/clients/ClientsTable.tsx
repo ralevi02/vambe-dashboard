@@ -26,6 +26,7 @@ export default function ClientsTable({ clients, compact = false }: Props) {
   const [statusFilter, setStatusFilter] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
   const [urgencyFilter, setUrgencyFilter] = useState("");
+  const [sentimentFilter, setSentimentFilter] = useState("");
   const [selected, setSelected] = useState<Client | null>(null);
 
   const sellers = Array.from(new Set(clients.map((c) => c.seller))).sort();
@@ -48,14 +49,15 @@ export default function ClientsTable({ clients, compact = false }: Props) {
       (statusFilter === "open" && !c.closed);
     const matchSector = !sectorFilter || c.category?.sector === sectorFilter;
     const matchUrgency = !urgencyFilter || c.category?.urgencyLevel === urgencyFilter;
-    return matchSearch && matchSeller && matchStatus && matchSector && matchUrgency;
+    const matchSentiment = !sentimentFilter || c.category?.sentiment === sentimentFilter;
+    return matchSearch && matchSeller && matchStatus && matchSector && matchUrgency && matchSentiment;
   });
 
   const closedCount = filtered.filter((c) => c.closed).length;
 
   // Columns shown depend on mode
   const showAiCols = !compact && hasAnalysis;
-  const colCount = showAiCols ? 7 : 5;
+  const colCount = showAiCols ? 8 : 5;
 
   const filters = (
     <div className={`flex flex-wrap gap-3 ${compact ? "mb-4" : "mb-5"}`}>
@@ -98,6 +100,16 @@ export default function ClientsTable({ clients, compact = false }: Props) {
             ]}
             placeholder="Toda urgencia"
           />
+          <FilterSelect
+            value={sentimentFilter}
+            onChange={setSentimentFilter}
+            options={[
+              { label: "Positivo", value: "Positivo" },
+              { label: "Neutral",  value: "Neutral" },
+              { label: "Negativo", value: "Negativo" },
+            ]}
+            placeholder="Todo sentimiento"
+          />
         </>
       )}
     </div>
@@ -110,7 +122,7 @@ export default function ClientsTable({ clients, compact = false }: Props) {
         "Vendedor",
         "Fecha",
         "Sector",
-        ...(showAiCols ? ["Canal", "Urgencia"] : []),
+        ...(showAiCols ? ["Canal", "Urgencia", "Sentimiento"] : []),
         "Estado",
       ].map((col) => (
         <th
@@ -163,6 +175,20 @@ export default function ClientsTable({ clients, compact = false }: Props) {
                   <Badge
                     label={client.category.urgencyLevel}
                     variant={urgencyVariant(client.category.urgencyLevel)}
+                  />
+                ) : (
+                  <span className="text-ink-5">—</span>
+                )}
+              </td>
+              <td className="px-4 py-3">
+                {client.category ? (
+                  <Badge
+                    label={client.category.sentiment}
+                    variant={
+                      client.category.sentiment === "Positivo" ? "success"
+                      : client.category.sentiment === "Negativo" ? "danger"
+                      : "default"
+                    }
                   />
                 ) : (
                   <span className="text-ink-5">—</span>
