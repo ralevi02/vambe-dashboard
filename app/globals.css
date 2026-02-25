@@ -86,3 +86,29 @@ body {
 .light .logo-theme-adapt {
   filter: none;
 }
+
+/* ── Custom scrollbars ──────────────────────────────────────────────────────── */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+/* Chromium / Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-5);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
