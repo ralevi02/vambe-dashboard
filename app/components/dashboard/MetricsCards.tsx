@@ -36,13 +36,13 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
         title="Cierres"
         value={metrics.closedDeals}
         sub={`${metrics.openDeals} sin cerrar`}
-        accent="text-[#00e676]"
+        accent="text-accent"
       />
       <StatCard
         title="Tasa de Conversión"
         value={`${metrics.conversionRate}%`}
         sub="ventas cerradas"
-        accent="text-[#00e676]"
+        accent="text-accent"
       />
       <StatCard
         title="Top Vendedor"

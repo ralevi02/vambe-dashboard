@@ -98,11 +98,11 @@ function NavList({
             title={collapsed ? item.label : undefined}
             className={`flex items-center gap-3 px-2.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
               isActive
-                ? "bg-[#00e676]/10 text-[#00e676]"
+                ? "bg-accent/10 text-accent"
                 : "text-ink-3 hover:bg-hover hover:text-ink"
             } ${collapsed ? "justify-center" : ""}`}
           >
-            <span className={`shrink-0 ${isActive ? "text-[#00e676]" : "text-ink-5"}`}>
+            <span className={`shrink-0 ${isActive ? "text-accent" : "text-ink-5"}`}>
               {item.icon}
             </span>
             {!collapsed && <span className="truncate">{item.label}</span>}

@@ -2,7 +2,7 @@ type BadgeVariant = "default" | "success" | "warning" | "danger" | "info";
 
 const variantStyles: Record<BadgeVariant, string> = {
   default: "bg-elevated text-ink-3",
-  success: "bg-[#00e676]/10 text-[#00e676]",
+  success: "bg-accent/10 text-accent",
   warning: "bg-amber-500/10 text-amber-400",
   danger:  "bg-red-500/10 text-red-400",
   info:    "bg-blue-500/10 text-blue-400",

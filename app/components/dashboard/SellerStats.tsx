@@ -21,7 +21,7 @@ export default function SellerStats({ sellers }: SellerStatsProps) {
                 <span>
                   {seller.closed}/{seller.total}
                 </span>
-                <span className="font-black text-[#00e676]">
+                <span className="font-black text-accent">
                   {seller.conversionRate}%
                 </span>
               </div>
@@ -29,7 +29,7 @@ export default function SellerStats({ sellers }: SellerStatsProps) {
             {/* Bar */}
             <div className="h-2 rounded-full bg-line overflow-hidden">
               <div
-                className="h-full rounded-full bg-[#00e676] transition-all duration-500"
+                className="h-full rounded-full bg-accent transition-all duration-500"
                 style={{ width: `${(seller.total / maxTotal) * 100}%` }}
               />
             </div>

@@ -7,6 +7,8 @@ import { saveCustomCSV, loadCustomCSV, clearCustomCSV, clearClients } from "@/li
 import { GROQ_MODELS, LS_MODEL_KEY } from "@/lib/config";
 
 // ── Mini preview card ─────────────────────────────────────────────────────────
+// Note: colors here are intentionally hardcoded — this component renders
+// static thumbnails of both themes simultaneously, so CSS vars can't be used.
 function ThemePreview({ mode }: { mode: "dark" | "light" }) {
   const isDark = mode === "dark";
   return (
@@ -40,7 +42,7 @@ function ThemePreview({ mode }: { mode: "dark" | "light" }) {
           <div className={`h-2 w-full rounded ${isDark ? "bg-[#1a1a1a]" : "bg-[#e4e4e7]"}`} />
           <div className={`h-2 w-5/6 rounded ${isDark ? "bg-[#1a1a1a]" : "bg-[#e4e4e7]"}`} />
           {/* Accent line */}
-          <div className="h-1.5 w-1/3 rounded bg-[#00e676]/60" />
+          <div className="h-1.5 w-1/3 rounded bg-accent/60" />
         </div>
       </div>
     </div>
@@ -131,7 +133,7 @@ export default function SettingsClient() {
                 onClick={() => !isSelected && toggle()}
                 className={`group flex flex-col gap-3 p-3 rounded-xl border-2 text-left transition-all ${
                   isSelected
-                    ? "border-[#00e676] bg-[#00e676]/5"
+                    ? "border-accent bg-accent/5"
                     : "border-line hover:border-line-subtle bg-transparent"
                 }`}
               >
@@ -139,7 +141,7 @@ export default function SettingsClient() {
                 <div className="flex items-center justify-between px-0.5">
                   <span
                     className={`text-sm font-semibold ${
-                      isSelected ? "text-[#00e676]" : "text-ink-3"
+                      isSelected ? "text-accent" : "text-ink-3"
                     }`}
                   >
                     {label}
@@ -147,11 +149,11 @@ export default function SettingsClient() {
                   {/* Radio indicator */}
                   <span
                     className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                      isSelected ? "border-[#00e676]" : "border-line"
+                      isSelected ? "border-accent" : "border-line"
                     }`}
                   >
                     {isSelected && (
-                      <span className="w-2 h-2 rounded-full bg-[#00e676]" />
+                      <span className="w-2 h-2 rounded-full bg-accent" />
                     )}
                   </span>
                 </div>
@@ -170,7 +172,7 @@ export default function SettingsClient() {
           </div>
           <button
             onClick={toggle}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-elevated border border-line text-sm font-medium text-ink-3 hover:text-ink hover:border-[#00e676]/40 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-elevated border border-line text-sm font-medium text-ink-3 hover:text-ink hover:border-accent/40 transition-colors"
           >
             {theme === "dark" ? (
               <>
