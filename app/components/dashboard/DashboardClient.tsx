@@ -98,7 +98,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all
               ${analysisState === "loading"
                 ? "bg-elevated text-ink-5 cursor-not-allowed"
-                : "bg-[#00e676] text-black hover:bg-[#00c864] active:scale-95"
+                : "bg-accent text-on-accent hover:bg-accent-dim active:scale-95"
               }`}
           >
             {analysisState === "loading" ? (
@@ -125,11 +125,11 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
             <div className="w-48">
               <div className="flex justify-between text-xs text-ink-4 mb-1">
                 <span>Procesando clientes</span>
-                <span className="text-[#00e676]">{progress.done}/{progress.total}</span>
+                <span className="text-accent">{progress.done}/{progress.total}</span>
               </div>
               <div className="h-1.5 bg-line rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#00e676] rounded-full transition-all duration-300"
+                  className="h-full bg-accent rounded-full transition-all duration-300"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -137,7 +137,7 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
           )}
 
           {analysisState === "done" && (
-            <p className="text-xs text-[#00e676]">
+            <p className="text-xs text-accent">
               ✓ {analyzedCount}/{clients.length} clientes analizados
             </p>
           )}
@@ -169,8 +169,8 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
           />
         ) : (
           <div className="bg-card rounded-xl border border-dashed border-line flex flex-col items-center justify-center p-10 text-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#00e676]/10 flex items-center justify-center">
-              <svg className="w-5 h-5 text-[#00e676]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+              <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m1.636 6.364l.707-.707M12 20v1m-6.364-1.636l.707-.707M6.343 6.343l-.707-.707" />
               </svg>

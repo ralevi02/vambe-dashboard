@@ -6,14 +6,14 @@ interface CategoryChartProps {
 }
 
 const COLORS = [
-  "bg-[#00e676]",
-  "bg-[#00bcd4]",
-  "bg-[#69f0ae]",
-  "bg-[#00acc1]",
-  "bg-[#26c6da]",
-  "bg-[#4dd0e1]",
-  "bg-[#80cbc4]",
-  "bg-[#a5d6a7]",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--chart-6)",
+  "var(--chart-7)",
+  "var(--chart-8)",
 ];
 
 export default function CategoryChart({
@@ -43,8 +43,8 @@ export default function CategoryChart({
               </div>
               <div className="h-2 rounded-full bg-line overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${COLORS[i % COLORS.length]} transition-all duration-500`}
-                  style={{ width: `${pct}%` }}
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{ width: `${pct}%`, backgroundColor: COLORS[i % COLORS.length] }}
                 />
               </div>
             </div>
