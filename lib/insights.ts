@@ -6,8 +6,8 @@ import {
   SentimentStat,
 } from "./types";
 
-/** Shorten long LLM text to a readable chart label (max 40 chars) */
-function shorten(text: string, max = 40): string {
+/** Shorten long LLM text to a readable chart label (max 28 chars) */
+function shorten(text: string, max = 28): string {
   const t = text.trim();
   return t.length > max ? t.slice(0, max - 1) + "…" : t;
 }

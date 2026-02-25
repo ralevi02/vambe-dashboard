@@ -17,6 +17,22 @@ interface Props {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CustomYTick({ x, y, payload }: any) {
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={4}
+      textAnchor="end"
+      fill="var(--ink-3)"
+      fontSize={11}
+    >
+      {payload.value}
+    </text>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CustomTooltip({ active, payload }: any) {
   if (!active || !payload?.length) return null;
   const { fullLabel, count } = payload[0].payload;
@@ -29,13 +45,14 @@ function CustomTooltip({ active, payload }: any) {
 }
 
 export default function PainPointsChart({ data }: Props) {
+  const height = Math.max(220, data.length * 34);
   return (
     <Card title="Pain Points más frecuentes">
-      <ResponsiveContainer width="100%" height={260}>
+      <ResponsiveContainer width="100%" height={height}>
         <BarChart
           data={data}
           layout="vertical"
-          margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
+          margin={{ top: 4, right: 24, left: 0, bottom: 4 }}
         >
           <CartesianGrid horizontal={false} stroke="var(--line)" strokeDasharray="3 3" />
           <XAxis
@@ -48,13 +65,13 @@ export default function PainPointsChart({ data }: Props) {
           <YAxis
             type="category"
             dataKey="label"
-            width={170}
-            tick={{ fontSize: 11, fill: "var(--ink-3)" }}
+            width={156}
+            tick={<CustomYTick />}
             axisLine={false}
             tickLine={false}
           />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: "var(--hover)" }} />
-          <Bar dataKey="count" fill="var(--accent)" radius={[0, 4, 4, 0]} maxBarSize={18} />
+          <Bar dataKey="count" fill="var(--accent)" radius={[0, 4, 4, 0]} maxBarSize={20} />
         </BarChart>
       </ResponsiveContainer>
     </Card>
