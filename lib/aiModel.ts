@@ -39,7 +39,10 @@ Esquema de cada objeto:
   "interactionVolume": "<'Bajo' si <100/semana | 'Medio' si 100-300/semana | 'Alto' si >300/semana>",
   "integrationNeeds": "<sistemas con los que necesitan integración, o 'Ninguno mencionado'>",
   "urgencyLevel": "<'Alta' | 'Media' | 'Baja'>",
-  "summary": "<resumen de 1-2 oraciones>"
+  "summary": "<resumen de 1-2 oraciones>",
+  "sentiment": "<'Positivo' si el cliente mostró entusiasmo o interés claro | 'Neutral' si fue indiferente o exploratorio | 'Negativo' si hubo objeciones fuertes o desinterés>",
+  "triggerWords": ["<palabra o frase de alta intención detectada en la transcripción, ej: 'presupuesto', 'urgente', 'competencia', 'integración', 'demo'>"],
+  "nextSteps": "<compromiso concreto acordado en la reunión, ej: 'Enviar propuesta el viernes' — o 'Sin próximos pasos mencionados' si no hay ninguno>"
 }
 
 Transcripciones:
