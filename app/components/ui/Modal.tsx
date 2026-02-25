@@ -25,7 +25,7 @@ export default function Modal({
   title,
   subtitle,
   avatarLetter,
-  maxWidth = "max-w-xl",
+  maxWidth = "max-w-2xl",
   children,
 }: Props) {
   useEffect(() => {

@@ -130,7 +130,7 @@ export default function ClientModal({ client, onClose }: Props) {
           {/* Transcription */}
           <section>
             <p className="text-xs font-bold text-ink-5 uppercase tracking-widest mb-2">Transcripción</p>
-            <pre className="text-xs text-ink-4 leading-relaxed whitespace-pre-wrap bg-surface p-4 rounded-xl border border-line-subtle max-h-48 overflow-y-auto font-sans">
+            <pre className="text-xs text-ink-4 leading-relaxed whitespace-pre-wrap bg-surface p-4 rounded-xl border border-line-subtle max-h-48 overflow-y-hidden font-sans">
               {client.transcription}
             </pre>
           </section>
