@@ -17,6 +17,22 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return chunks;
 }
 
+/** Capitalize the first letter of a string, leave the rest as-is */
+const cap = (s: string): string => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+/** Normalize free-text fields returned by the LLM to start with a capital letter */
+function normalizeCategory(c: ClientCategory): Partial<ClientCategory> {
+  return {
+    sector:            cap(c.sector),
+    discoveryChannel:  cap(c.discoveryChannel),
+    mainPainPoint:     cap(c.mainPainPoint),
+    integrationNeeds:  cap(c.integrationNeeds),
+    summary:           cap(c.summary),
+    nextSteps:         cap(c.nextSteps),
+    triggerWords:      c.triggerWords?.map(cap) ?? [],
+  };
+}
+
 /** Send one batch of clients to the LLM and return id→category pairs */
 async function analyzeBatch(
   batch: Client[],
@@ -62,7 +78,8 @@ Responde SOLO con el array JSON, sin ningún texto adicional.
 
   const text = response.choices[0]?.message?.content?.trim() ?? "";
   const clean = text.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
-  return JSON.parse(clean) as Array<{ id: string } & ClientCategory>;
+  const parsed = JSON.parse(clean) as Array<{ id: string } & ClientCategory>;
+  return parsed.map((item) => ({ ...item, ...normalizeCategory(item) }));
 }
 
 /**
