@@ -67,6 +67,9 @@ export default function DashboardClient({ initialClients }: DashboardClientProps
             saveClients(json.clients);
             setClients(json.clients);
             setAnalysisState("done");
+          } else if (json.type === "error") {
+            setErrorMsg(json.message);
+            setAnalysisState("error");
           }
         }
       }

@@ -20,21 +20,6 @@ export const GROQ_MODELS: { label: string; value: string; description: string; r
     value: "meta-llama/llama-4-scout-17b-16e-instruct",
     description: "Llama 4 · MoE 16 expertos · Más rápido",
   },
-  {
-    label: "Kimi K2",
-    value: "moonshotai/kimi-k2-instruct",
-    description: "Moonshot AI · Excelente razonamiento",
-  },
-  {
-    label: "Qwen3 32B",
-    value: "qwen/qwen3-32b",
-    description: "Alibaba · Sólido en tareas de análisis",
-  },
-  {
-    label: "Llama 3.1 8B",
-    value: "llama-3.1-8b-instant",
-    description: "Más rápido · Menor precisión",
-  },
 ];
 
 /** Number of client transcriptions sent per LLM request */
