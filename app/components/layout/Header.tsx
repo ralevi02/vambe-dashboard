@@ -31,14 +31,7 @@ export default function Header() {
         </span>
       </div>
 
-      <div className="flex items-center gap-3 md:gap-4">
-        <span className="text-xs text-ink-4 hidden sm:inline">
-          {new Date().toLocaleDateString("es-CL")}
-        </span>
-        <div className="w-8 h-8 rounded-full bg-[#00e676] flex items-center justify-center text-black text-xs font-black">
-          V
-        </div>
-      </div>
+
     </header>
   );
 }

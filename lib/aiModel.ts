@@ -17,6 +17,22 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return chunks;
 }
 
+/** Capitalize the first letter of a string, leave the rest as-is */
+const cap = (s: string): string => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+/** Normalize free-text fields returned by the LLM to start with a capital letter */
+function normalizeCategory(c: ClientCategory): Partial<ClientCategory> {
+  return {
+    sector:            cap(c.sector),
+    discoveryChannel:  cap(c.discoveryChannel),
+    mainPainPoint:     cap(c.mainPainPoint),
+    integrationNeeds:  cap(c.integrationNeeds),
+    summary:           cap(c.summary),
+    nextSteps:         cap(c.nextSteps),
+    triggerWords:      c.triggerWords?.map(cap) ?? [],
+  };
+}
+
 /** Send one batch of clients to the LLM and return id→category pairs */
 async function analyzeBatch(
   batch: Client[],
@@ -39,7 +55,10 @@ Esquema de cada objeto:
   "interactionVolume": "<'Bajo' si <100/semana | 'Medio' si 100-300/semana | 'Alto' si >300/semana>",
   "integrationNeeds": "<sistemas con los que necesitan integración, o 'Ninguno mencionado'>",
   "urgencyLevel": "<'Alta' | 'Media' | 'Baja'>",
-  "summary": "<resumen de 1-2 oraciones>"
+  "summary": "<resumen de 1-2 oraciones>",
+  "sentiment": "<'Positivo' si el cliente mostró entusiasmo o interés claro | 'Neutral' si fue indiferente o exploratorio | 'Negativo' si hubo objeciones fuertes o desinterés>",
+  "triggerWords": ["<palabra o frase de alta intención detectada en la transcripción, ej: 'presupuesto', 'urgente', 'competencia', 'integración', 'demo'>"],
+  "nextSteps": "<compromiso concreto acordado en la reunión, ej: 'Enviar propuesta el viernes' — o 'Sin próximos pasos mencionados' si no hay ninguno>"
 }
 
 Transcripciones:
@@ -55,11 +74,25 @@ Responde SOLO con el array JSON, sin ningún texto adicional.
       { role: "user", content: userPrompt },
     ],
     temperature: 0.2,
+  }).catch((err) => {
+    // Groq rate-limit / quota exhausted → surface a clear message
+    const msg: string = err?.message ?? String(err);
+    const status: number = err?.status ?? err?.response?.status ?? 0;
+    if (
+      status === 429 ||
+      /rate.limit|quota|token.*limit|limit.*token|capacity/i.test(msg)
+    ) {
+      throw new Error(
+        "Límite de tokens agotado para este modelo. Esperá unos minutos o cambia de modelo en Configuración."
+      );
+    }
+    throw err;
   });
 
   const text = response.choices[0]?.message?.content?.trim() ?? "";
   const clean = text.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
-  return JSON.parse(clean) as Array<{ id: string } & ClientCategory>;
+  const parsed = JSON.parse(clean) as Array<{ id: string } & ClientCategory>;
+  return parsed.map((item) => ({ ...item, ...normalizeCategory(item) }));
 }
 
 /**

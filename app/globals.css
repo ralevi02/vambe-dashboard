@@ -18,6 +18,18 @@
   --ink-5:        #555555;   /* placeholder / disabled */
 
   --accent:       #00e676;   /* brand green */
+  --accent-dim:   #00c853;   /* accent hover / pressed */
+  --on-accent:    #0a0a0a;   /* text on accent backgrounds */
+
+  /* Chart palette */
+  --chart-1: #00e676;
+  --chart-2: #00bcd4;
+  --chart-3: #69f0ae;
+  --chart-4: #00acc1;
+  --chart-5: #26c6da;
+  --chart-6: #4dd0e1;
+  --chart-7: #80cbc4;
+  --chart-8: #a5d6a7;
 }
 
 .light {
@@ -35,6 +47,8 @@
   --ink-5:        #d4d4d8;
 
   --accent:       #00c853;   /* brand green (slightly darker for light bg) */
+  --accent-dim:   #00a844;
+  --on-accent:    #0a0a0a;
 }
 
 /* ── Tailwind v4 token registration ────────────────────────────────────────── */
@@ -52,6 +66,10 @@
   --color-ink-4:       var(--ink-4);
   --color-ink-5:       var(--ink-5);
 
+  --color-accent:      var(--accent);
+  --color-accent-dim:  var(--accent-dim);
+  --color-on-accent:   var(--on-accent);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -67,4 +85,30 @@ body {
 }
 .light .logo-theme-adapt {
   filter: none;
+}
+
+/* ── Custom scrollbars ──────────────────────────────────────────────────────── */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+/* Chromium / Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-5);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

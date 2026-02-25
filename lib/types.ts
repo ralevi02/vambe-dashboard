@@ -32,6 +32,9 @@ export interface ClientCategory {
   integrationNeeds: string; // Systems they want to integrate with
   urgencyLevel: "Baja" | "Media" | "Alta";
   summary: string;          // Short summary of the transcript
+  sentiment: "Positivo" | "Neutral" | "Negativo"; // Overall client attitude
+  triggerWords: string[];   // High-intent keywords detected (e.g. "presupuesto", "urgente")
+  nextSteps: string;        // Concrete commitments extracted (e.g. "Enviar demo el lunes")
 }
 
 // Shape returned by the /api/clients endpoint
@@ -70,4 +73,30 @@ export interface SellerPerformance {
   total: number;
   closed: number;
   conversionRate: number;
+}
+
+// ── Insights page data ────────────────────────────────────────────────────────
+export interface PainPointCount {
+  label: string;     // shortened for Y-axis display
+  fullLabel: string; // full text shown on hover
+  count: number;
+}
+
+export interface ChannelConversionStat {
+  channel: string;
+  total: number;
+  closed: number;
+  rate: number; // 0-100
+}
+
+export interface SentimentStat {
+  sentiment: string;
+  count: number;
+}
+
+export interface InsightsData {
+  painPoints: PainPointCount[];           // top N pain points by frequency
+  channelConversion: ChannelConversionStat[];
+  sentimentDistribution: SentimentStat[];
+  hasAiData: boolean;                     // false if no client has been analyzed yet
 }

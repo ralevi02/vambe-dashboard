@@ -15,6 +15,9 @@ const urgencyVariant = (u?: string) =>
 const volumeVariant = (v?: string) =>
   v === "Alto" ? "danger" : v === "Medio" ? "warning" : ("default" as const);
 
+const sentimentVariant = (s?: string) =>
+  s === "Positivo" ? "success" : s === "Negativo" ? "danger" : ("default" as const);
+
 export default function ClientModal({ client, onClose }: Props) {
   const cat = client.category;
 
@@ -43,6 +46,12 @@ export default function ClientModal({ client, onClose }: Props) {
               label={client.closed ? "Cerrado" : "Abierto"}
               variant={client.closed ? "success" : "warning"}
             />
+            {cat && (
+              <Badge
+                label={cat.sentiment}
+                variant={sentimentVariant(cat.sentiment)}
+              />
+            )}
           </div>
 
           {/* AI section */}
@@ -67,6 +76,34 @@ export default function ClientModal({ client, onClose }: Props) {
                   </div>
                 ))}
               </div>
+
+              {/* Next steps */}
+              {cat.nextSteps && cat.nextSteps !== "Sin próximos pasos mencionados" && (
+                <div className="flex gap-3 p-4 bg-elevated border border-line rounded-xl">
+                  <span className="text-base shrink-0">📅</span>
+                  <div>
+                    <p className="text-xs font-bold text-ink-4 uppercase tracking-widest mb-1">Próximos pasos</p>
+                    <p className="text-sm text-ink-2 leading-snug">{cat.nextSteps}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Trigger words */}
+              {cat.triggerWords.length > 0 && (
+                <div>
+                  <p className="text-xs font-bold text-ink-4 uppercase tracking-widest mb-2">Palabras clave detectadas</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {cat.triggerWords.map((word) => (
+                      <span
+                        key={word}
+                        className="px-2.5 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent border border-accent/20"
+                      >
+                        {word}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Text fields */}
               <div className="divide-y divide-line">
@@ -93,7 +130,7 @@ export default function ClientModal({ client, onClose }: Props) {
           {/* Transcription */}
           <section>
             <p className="text-xs font-bold text-ink-5 uppercase tracking-widest mb-2">Transcripción</p>
-            <pre className="text-xs text-ink-4 leading-relaxed whitespace-pre-wrap bg-surface p-4 rounded-xl border border-line-subtle max-h-48 overflow-y-auto font-sans">
+            <pre className="text-xs text-ink-4 leading-relaxed whitespace-pre-wrap bg-surface p-4 rounded-xl border border-line-subtle max-h-48 overflow-y-hidden font-sans">
               {client.transcription}
             </pre>
           </section>
